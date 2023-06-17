@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticationController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,5 +17,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+  return $request->user();
 });
+
+Route::post('auth/login', [AuthenticationController::class, 'login']);
+Route::post('auth/update-token', [AuthenticationController::class, 'refresh']);
+
+Route::post('transfer', [TransactionController::class, 'store'])->middleware('auth.jwt');
